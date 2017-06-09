@@ -31,7 +31,12 @@ namespace ConsoleApp2 {
                     if (line == null) break;
 
                     if (line.TrimStart().StartsWith("<td class=\"cfb2\">")) {
-                        line = line.Substring(line.IndexOf("<strong>") + 8);
+                        if (line.Contains("<strong>")) {
+                            line = line.Substring(line.IndexOf("<strong>") + 8);
+                        } else {
+                            line = line.Substring(line.IndexOf("<a ") + 1);
+                            line = line.Substring(line.IndexOf(">") + 1);
+                        }
                         if (!line.Contains("</strong>")) {
                             line += await sr.ReadLineAsync();
                         }
