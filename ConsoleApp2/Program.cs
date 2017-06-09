@@ -31,8 +31,9 @@ namespace ConsoleApp2 {
                 centerY = 1 - centerY;
                 centerX *= image.Width;
                 centerY *= image.Height;
-                Color color = Color.FromArgb(Math.Min(255, (int)(opacity * 256)), fcs ? 255 : 0, 0, 0);
-                g.DrawString(name, new Font(FontFamily.GenericSansSerif, 10, bold ? FontStyle.Bold : FontStyle.Regular), new SolidBrush(color), (float)centerX, (float)centerY, new StringFormat() {
+                Color color = Color.FromArgb(Math.Min(255, (int)(128 + opacity * 128)), fcs ? 255 : 0, 0, 0);
+                float fontSize = 10 + (float)(4 * opacity);
+                g.DrawString(name, new Font(FontFamily.GenericSansSerif, fontSize, bold ? FontStyle.Bold : FontStyle.Regular), new SolidBrush(color), (float)centerX, (float)centerY, new StringFormat() {
                     LineAlignment = StringAlignment.Center,
                     Alignment = StringAlignment.Center
                 });
@@ -168,7 +169,7 @@ namespace ConsoleApp2 {
 
                         int yearCount = endYear - startYear + 1;
 
-                        image = Overlay(image, thisTeam.School, thisTeam.Latitude, thisTeam.Longitude, thisTeam.FCS, bold: true);
+                        image = Overlay(image, thisTeam.School, thisTeam.Latitude, thisTeam.Longitude, thisTeam.FCS, opacity:2, bold: true);
 
                         var list = await Schedule.GetSchedule(Enumerable.Range(startYear, yearCount), teamName);
 
