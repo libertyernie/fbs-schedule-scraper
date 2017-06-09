@@ -173,10 +173,8 @@ namespace ConsoleApp2 {
 
                         var list = await Schedule.GetSchedule(Enumerable.Range(startYear, yearCount), teamName);
 
-                        foreach (var group in list.Select(s => s.StartsWith("at ") ? s.Substring(3) : s).GroupBy(s => s)) {
-                            string name = group.Key;
-
-                            var team = FindSchool(c, name);
+                        foreach (var group in list.Select(s => s.StartsWith("at ") ? s.Substring(3) : s).Select(s => FindSchool(c, s)).GroupBy(x => x)) {
+                            var team = group.Key;
                             if (team != null) {
                                 image = Overlay(image, team.School, team.Latitude, team.Longitude, team.FCS, opacity: (double)group.Count() / yearCount);
                             }
