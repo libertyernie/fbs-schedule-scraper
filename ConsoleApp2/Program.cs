@@ -33,7 +33,7 @@ namespace ConsoleApp2 {
                 centerY *= image.Height;
                 Color color = Color.FromArgb(Math.Min(255, (int)(128 + opacity * 128)), fcs ? 255 : 0, 0, 0);
                 float fontSize = 10 + (float)(4 * opacity);
-                g.DrawString(name, new Font(FontFamily.GenericSansSerif, fontSize, bold ? FontStyle.Bold : FontStyle.Regular), new SolidBrush(color), (float)centerX, (float)centerY, new StringFormat() {
+                g.DrawString(name, new Font("Arial", fontSize, bold ? FontStyle.Bold : FontStyle.Regular), new SolidBrush(color), (float)centerX, (float)centerY, new StringFormat() {
                     LineAlignment = StringAlignment.Center,
                     Alignment = StringAlignment.Center
                 });
