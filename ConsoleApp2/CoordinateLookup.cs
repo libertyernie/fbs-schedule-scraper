@@ -14,6 +14,7 @@ namespace ConsoleApp2 {
         public CoordinateLookup.Coordinates Stadium;
         public CoordinateLookup.Coordinates City;
         public string School;
+        public bool FCS;
 
         public double Latitude => Stadium?.Latitude ?? City?.Latitude ?? 0;
         public double Longitude => Stadium?.Longitude ?? City?.Longitude ?? 0;
@@ -80,6 +81,7 @@ namespace ConsoleApp2 {
 
             Regex r = new Regex(@"\]\] ?\|\| ?\[\[");
             foreach (string content in new string[] { content1, content2 }) {
+                bool fcs = content == content2;
                 string x = content.Replace("||", "||\n");
                 using (StringReader sr = new StringReader(x)) {
                     do {
@@ -113,7 +115,7 @@ namespace ConsoleApp2 {
                             Console.WriteLine(stadiumName + ": " + cityName);
 
                             sem.WaitOne();
-                            var task = GetStadiumCoordinates(stadiumName, cityName, teamDisplay);
+                            var task = GetStadiumCoordinates(stadiumName, cityName, teamDisplay, fcs);
                             var _ = task.ContinueWith(t => sem.Release());
                             tasks.Add(task);
                         }
@@ -157,11 +159,12 @@ namespace ConsoleApp2 {
             }
         }
 
-        private static async Task<StadiumCoordinates> GetStadiumCoordinates(string stadiumName, string cityName, string schoolName) {
+        private static async Task<StadiumCoordinates> GetStadiumCoordinates(string stadiumName, string cityName, string schoolName, bool fcs) {
             return new StadiumCoordinates {
                 Stadium = await GetCoordinates(stadiumName),
                 City = await GetCoordinates(cityName),
-                School = schoolName
+                School = schoolName,
+                FCS = fcs
             };
         }
 

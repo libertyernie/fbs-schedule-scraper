@@ -23,7 +23,7 @@ namespace ConsoleApp2 {
             return Image.FromStream(inStream);
         }
 
-        public static Image Overlay(Image image, string name, double latitude, double longitude, double opacity = 1.0, bool bold = false) {
+        public static Image Overlay(Image image, string name, double latitude, double longitude, bool fcs, double opacity = 1.0, bool bold = false) {
             using (Graphics g = Graphics.FromImage(image)) {
                 double centerY = (latitude - 24.2) / (49.8 - 24.2);
                 double centerX = (longitude - -125.5) / (-66.5 - -125.5);
@@ -31,7 +31,7 @@ namespace ConsoleApp2 {
                 centerY = 1 - centerY;
                 centerX *= image.Width;
                 centerY *= image.Height;
-                Color color = Color.FromArgb(Math.Min(255, (int)(opacity * 256)), 0, 0, 0);
+                Color color = Color.FromArgb(Math.Min(255, (int)(opacity * 256)), fcs ? 255 : 0, 0, 0);
                 g.DrawString(name, new Font(FontFamily.GenericSansSerif, 10, bold ? FontStyle.Bold : FontStyle.Regular), new SolidBrush(color), (float)centerX, (float)centerY, new StringFormat() {
                     LineAlignment = StringAlignment.Center,
                     Alignment = StringAlignment.Center
@@ -168,7 +168,7 @@ namespace ConsoleApp2 {
 
                         int yearCount = endYear - startYear + 1;
 
-                        image = Overlay(image, thisTeam.School, thisTeam.Latitude, thisTeam.Longitude, bold: true);
+                        image = Overlay(image, thisTeam.School, thisTeam.Latitude, thisTeam.Longitude, thisTeam.FCS, bold: true);
 
                         var list = await Schedule.GetSchedule(Enumerable.Range(startYear, yearCount), teamName);
 
@@ -177,7 +177,7 @@ namespace ConsoleApp2 {
 
                             var team = FindSchool(c, name);
                             if (team != null) {
-                                image = Overlay(image, team.School, team.Latitude, team.Longitude, opacity: (double)group.Count() / yearCount);
+                                image = Overlay(image, team.School, team.Latitude, team.Longitude, team.FCS, opacity: (double)group.Count() / yearCount);
                             }
                         }
 
