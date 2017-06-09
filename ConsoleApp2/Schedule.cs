@@ -35,7 +35,7 @@ namespace ConsoleApp2 {
                         if (!line.Contains("</strong>")) {
                             line += await sr.ReadLineAsync();
                         }
-                        line = line.Substring(0, line.IndexOf("</strong>")).Trim();
+                        line = line.Substring(0, line.IndexOf("<")).Trim();
                         list.Add(line);
                     }
                 }
