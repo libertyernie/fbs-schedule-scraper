@@ -169,8 +169,6 @@ namespace ConsoleApp2 {
 
                         int yearCount = endYear - startYear + 1;
 
-                        image = Overlay(image, thisTeam.School, thisTeam.Latitude, thisTeam.Longitude, thisTeam.FCS, opacity:2, bold: true);
-
                         var list = await Schedule.GetSchedule(Enumerable.Range(startYear, yearCount), teamName);
 
                         foreach (var group in list.Select(s => s.StartsWith("at ") ? s.Substring(3) : s).Select(s => FindSchool(c, s)).GroupBy(x => x)) {
@@ -179,6 +177,8 @@ namespace ConsoleApp2 {
                                 image = Overlay(image, team.School, team.Latitude, team.Longitude, team.FCS, opacity: (double)group.Count() / yearCount);
                             }
                         }
+
+                        image = Overlay(image, thisTeam.School, thisTeam.Latitude, thisTeam.Longitude, thisTeam.FCS, opacity: 2, bold: true);
 
                         image.Save(pngFile, ImageFormat.Png);
                         Process.Start(pngFile);
